@@ -60,4 +60,91 @@ class FoodItemController extends Controller
               ]);
         }
     }
+    public function updateFoodItemApi(Request $req){
+        $data = FoodItem::find($req->id);
+        $data->categoryId = $req->categoryId;
+        $data->subCategoryId = $req->subCategoryId;
+        $data->foodName = $req->foodName;
+        $data->foodCode = $req->foodCode;
+        $data->description = $req->description;
+        $data->rating = $req->rating;
+        $data->price = $req->price;
+        if($req->hasFile('image')){
+            $file =$req['image'];
+            $extension = $file->getClientOriginalExtension();
+            $fileName =time().'.'.$extension;
+            $file->move('upload/image',$fileName);
+            $data->image = $fileName;
+        }
+        else{
+            unset($data['image']);
+        }
+        $result = $data->save();
+        if($result){
+            return response([
+              'message'=>'FoodItem Updated Sucessfully',
+              'status'=>'201'
+            ]);
+        }
+        else{
+            return response([
+                'message'=>'failed, Something Went Wrong',
+                'status'=>'202'
+              ]);
+        }
+    }
+    public function foodItemDeleteApi($id){
+        $data = FoodItem::find($id);
+        if(!$data){
+            return response([
+                "message"=>'Food Item doesnt exist',
+                "status"=> 202
+            ]);
+        }else{
+            $data->delete();
+            return response([
+                "message"=>'Food Item deleted successfuly',
+                "status"=> 201
+            ]);
+        }
+    }
+    public function getDropdownApi(){
+
+        $cat = Category::with('subcategories')->get();
+        $catData = $cat->toArray();
+        // $subCatData = $cat->subcategories->toArray();
+        // $combined = [
+        //     'category'=>$catData,
+        //     'subCategory'=>$subCatData
+        // ];
+        return response()->json([
+            "category"=>$catData
+        ]);
+        // $data = DB::table('categories')
+        // ->leftJoin('subcategories','categories.id','=','subcategories.categoryId')
+        // ->select('categories.*','subcategories.subCategoryName')
+        // ->get();
+
+        // $data = Category::all();
+        // $data['subArray'] = [];
+        // $subArray= [];
+        // foreach($data as $cat){
+        //  $subCat = Subcategory::where('categoryId',$cat->id)->get();
+        //  foreach($subCat as $sub){
+        //     $subArray[] = [
+        //         'subId'=> $sub['id'],
+        //         'subName'=>$sub['subCategoryName']
+        //      ];
+        //  }
+        // // $subArray[]=$subCat;
+        // }
+        // $data['subArray'] = $subArray;
+        // return $data;
+    }
+    public function getIp(Request $req){
+        
+        $data = $req->getClientIp();
+        return $data;
+
+    }
 }

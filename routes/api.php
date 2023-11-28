@@ -6,6 +6,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\Menu\CategoryController;
 use App\Http\Controllers\Menu\SubcategoryController;
 use App\Http\Controllers\Menu\FoodItemController;
+use App\Http\Controllers\CartController;
+use App\Models\FoodItem;
+use Whoops\RunInterface;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +44,12 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::get('/get-sub-category/{id}',[FoodItemController::class,'getSubcategoryId'])->name('get-sub-category');
     Route::post('/add-food-item',[FoodItemController::class,'addFoodItemApi'])->name('add-food-item');
     Route::get('/food-item-list',[FoodItemController::class,'getFoodItemApi'])->name('food-item-list');
+    Route::post('/food-item-update',[FoodItemController::class,'updateFoodItemApi'])->name('food-item-update');
+    Route::delete('/food-item-delete/{id}',[FoodItemController::class,'foodItemDeleteApi'])->name('food-item-delete-api');
 });
 
 Route::post("login",[UserController::class,'adminLogin']);
+Route::get('/get-ip',[FoodItemController::class,'getIp']);
+Route::get('/get-dropdown',[FoodItemController::class,'getDropdownApi']);
+Route::post('/add-to-cart',[CartController::class,'addToCart']);
+Route::get('/cart-item',[CartController::class,'getCartApi']);
