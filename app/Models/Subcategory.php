@@ -9,6 +9,7 @@ class Subcategory extends Model
 {
     use HasFactory;
     public function category(){
-        return $this->belongsTo(Category::class,'subCategoryname');
+        
+        return $this->belongsTo(Category::class,'subCategoryName');
     }
 }

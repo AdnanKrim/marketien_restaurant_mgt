@@ -7,6 +7,7 @@ use App\Http\Controllers\Menu\CategoryController;
 use App\Http\Controllers\Menu\SubcategoryController;
 use App\Http\Controllers\Menu\FoodItemController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\EmployeeController;
 use App\Models\FoodItem;
 use Whoops\RunInterface;
 
@@ -45,11 +46,21 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::post('/add-food-item',[FoodItemController::class,'addFoodItemApi'])->name('add-food-item');
     Route::get('/food-item-list',[FoodItemController::class,'getFoodItemApi'])->name('food-item-list');
     Route::post('/food-item-update',[FoodItemController::class,'updateFoodItemApi'])->name('food-item-update');
+    Route::get('/food-item-edit/{id}',[FoodItemController::class,'editFoodItemFormApi'])->name('food-item-edit-information');
     Route::delete('/food-item-delete/{id}',[FoodItemController::class,'foodItemDeleteApi'])->name('food-item-delete-api');
+
+    // Employee api
+    Route::post('/add-employee',[EmployeeController::class,'addEmployeeApi'])->name('add-employee');
+    Route::get('/employee-list',[EmployeeController::class,'employeeListApi'])->name('employee-list');
+    Route::post('/employee-update',[EmployeeController::class,'updateEmployeeApi'])->name('employee-update');
+    Route::get('/employee-detail/{id}',[EmployeeController::class,'adminEmployeeDetailApi'])->name('employee-detail-information');
+    Route::get('/employee-edit/{id}',[EmployeeController::class,'editEmployeeFormApi'])->name('employee-edit-information');
+    Route::delete('/employee-delete/{id}',[EmployeeController::class,'employeeDeleteApi'])->name('employee-delete-api');
+
 });
 
 Route::post("login",[UserController::class,'adminLogin']);
-Route::get('/get-ip',[FoodItemController::class,'getIp']);
+Route::get('/get-ip',[EmployeeController::class,'getIp']);
 Route::get('/get-dropdown',[FoodItemController::class,'getDropdownApi']);
 Route::post('/add-to-cart',[CartController::class,'addToCart']);
 Route::get('/cart-item',[CartController::class,'getCartApi']);

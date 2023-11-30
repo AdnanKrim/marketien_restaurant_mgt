@@ -60,6 +60,12 @@ class FoodItemController extends Controller
               ]);
         }
     }
+    public function editFoodItemFormApi($id){
+        $data = Subcategory::find($id);
+        return response([
+           'subCategory'=> $data
+        ]);
+    }
     public function updateFoodItemApi(Request $req){
         $data = FoodItem::find($req->id);
         $data->categoryId = $req->categoryId;
@@ -112,34 +118,10 @@ class FoodItemController extends Controller
 
         $cat = Category::with('subcategories')->get();
         $catData = $cat->toArray();
-        // $subCatData = $cat->subcategories->toArray();
-        // $combined = [
-        //     'category'=>$catData,
-        //     'subCategory'=>$subCatData
-        // ];
         return response()->json([
             "category"=>$catData
         ]);
-        // $data = DB::table('categories')
-        // ->leftJoin('subcategories','categories.id','=','subcategories.categoryId')
-        // ->select('categories.*','subcategories.subCategoryName')
-        // ->get();
-
-        // $data = Category::all();
-        // $data['subArray'] = [];
-        // $subArray= [];
-        // foreach($data as $cat){
-        //  $subCat = Subcategory::where('categoryId',$cat->id)->get();
-        //  foreach($subCat as $sub){
-        //     $subArray[] = [
-        //         'subId'=> $sub['id'],
-        //         'subName'=>$sub['subCategoryName']
-        //      ];
-        //  }
-        // // $subArray[]=$subCat;
-        // }
-        // $data['subArray'] = $subArray;
-        // return $data;
+        
     }
     public function getIp(Request $req){
         

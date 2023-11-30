@@ -46,7 +46,7 @@ class EmployeeController extends Controller
             ]);
         }
     }
-    public function updateFormApi($id){
+    public function editEmployeeFormApi($id){
         $data = Employee::find($id);
         return response([
            'employee'=> $data,    
@@ -84,10 +84,10 @@ class EmployeeController extends Controller
             ]);
         }
     }
-    public function AdminEmployeeDetailApi($id){
+    public function adminEmployeeDetailApi($id){
         $data = Employee::find($id);
         $fileName = $data->image;
-        $path = asset('/upload/image'. $fileName );
+        $path = asset('/upload/image/'. $fileName );
         // $path = public_path().'/image/upload/'.$fileName;
         // $file = Response::download($path);
         return response()->json([
@@ -95,18 +95,18 @@ class EmployeeController extends Controller
             'file'=> $path,
         ]);
     }
-    public function studentDeleteApi($id){
+    public function employeeDeleteApi($id){
     
         $data = Employee::find($id);
         if(!$data){
             return response([
-                "message"=>'student doesnt exist',
+                "message"=>'employee doesnt exist',
                 "status"=> 202
             ]);
         }else{
             $data->delete();
             return response([
-                "message"=>'student deleted successfuly',
+                "message"=>'employee deleted successfuly',
                 "status"=> 201
             ]);
         }
