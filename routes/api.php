@@ -8,6 +8,7 @@ use App\Http\Controllers\Menu\SubcategoryController;
 use App\Http\Controllers\Menu\FoodItemController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\OrderController;
 use App\Models\FoodItem;
 use Whoops\RunInterface;
 
@@ -43,8 +44,9 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::post('/sub-category-update',[SubcategoryController::class,'updateSubCategoryApi'])->name('sub-category-update-api');
     // FoodItem api
     Route::get('/get-sub-category/{id}',[FoodItemController::class,'getSubcategoryId'])->name('get-sub-category');
+    Route::get('/get-dropdown',[FoodItemController::class,'getDropdownApi']);
     Route::post('/add-food-item',[FoodItemController::class,'addFoodItemApi'])->name('add-food-item');
-    Route::get('/food-item-list',[FoodItemController::class,'getFoodItemApi'])->name('food-item-list');
+    
     Route::post('/food-item-update',[FoodItemController::class,'updateFoodItemApi'])->name('food-item-update');
     Route::get('/food-item-edit/{id}',[FoodItemController::class,'editFoodItemFormApi'])->name('food-item-edit-information');
     Route::delete('/food-item-delete/{id}',[FoodItemController::class,'foodItemDeleteApi'])->name('food-item-delete-api');
@@ -60,7 +62,12 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
 });
 
 Route::post("login",[UserController::class,'adminLogin']);
-Route::get('/get-ip',[EmployeeController::class,'getIp']);
-Route::get('/get-dropdown',[FoodItemController::class,'getDropdownApi']);
-Route::post('/add-to-cart',[CartController::class,'addToCart']);
-Route::get('/cart-item',[CartController::class,'getCartApi']);
+// Route::get('/get-ip',[EmployeeController::class,'getIp']);
+//Add to Cart
+Route::get('/add-to-cart/{id}',[CartController::class,'addToCart'])->name('add-to-cart');
+Route::get('/cart-item',[CartController::class,'getCartApi'])->name('cart-item');
+Route::delete('/food-cart-delete/{id}',[CartController::class,'foodCartDeleteApi'])->name('food-cart-delete-api');
+//Menu
+Route::get('/food-item-list',[FoodItemController::class,'getFoodItemApi'])->name('food-item-list');
+//Order
+Route::post('/add-order',[OrderController::class,'addOrderApi'])->name('add-order');

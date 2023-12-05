@@ -17,8 +17,17 @@ class FoodItemController extends Controller
         ->leftJoin('subcategories','food_items.subCategoryId','=','subcategories.id')
         ->select('food_items.*','categories.categoryName as categoryId','subcategories.subCategoryName as subCategoryId')
         ->get();
+        $foodItem=[];
+
+        foreach($data as $food){
+        $fileName = $food->image;
+        $path = asset('/upload/image/'. $fileName );   
+         $food->imgLink = $path;
+         unset($food->image); 
+         $foodItem[]= $food;
+    }
         return response([
-           'foodItem'=>$data
+           'foodItem'=>$foodItem
         ]);
     }
     public function getSubcategoryId($id){
@@ -61,9 +70,9 @@ class FoodItemController extends Controller
         }
     }
     public function editFoodItemFormApi($id){
-        $data = Subcategory::find($id);
+        $data = FoodItem::find($id);
         return response([
-           'subCategory'=> $data
+           'foodItem'=> $data
         ]);
     }
     public function updateFoodItemApi(Request $req){
