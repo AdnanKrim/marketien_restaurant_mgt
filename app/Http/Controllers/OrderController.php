@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 class OrderController extends Controller
 {
   public function getOrderListApi(){
+    // $data = Order::where('orderStage','=','pending')->get();
     $data = Order::all();
     return response([
         'orderList'=>$data
@@ -39,5 +40,59 @@ class OrderController extends Controller
             'status'=>'202'
           ]);
     }
+    }
+    public function orderDetails($id){
+       $data = Order::where('id',$id)->first();
+       $items = json_decode($data['foodItems']);
+       $data['items'] = $items;
+       unset($data['foodItems']);
+       return response([
+           'order'=> $data,
+           
+       ]);
+    }
+    public function orderStageApproved($id){
+      $data = Order::find($id);
+      $data->orderStage = 'cooking';
+      $result = $data->save();
+      if($result){
+        return response([
+          'message'=>'Order is in cooking process now',
+          'status'=>'201'
+        ]);
+    }
+    else{
+        return response([
+            'message'=>'failed, Something Went Wrong',
+            'status'=>'202'
+          ]);
+    }
+
+    }
+    public function orderStageOnTheWay($id){
+      $data = Order::find($id);
+      $data->orderStage = 'on the way';
+      $result = $data->save();
+      if($result){
+        return response([
+          'message'=>'Order is on the way',
+          'status'=>'201'
+        ]);
+    }
+    else{
+        return response([
+            'message'=>'failed, Something Went Wrong',
+            'status'=>'202'
+          ]);
+    }
+
+    }
+    public function userOrderTracking(){
+      $data = Order::where('clientIp',Request()->ip())->where('orderStage','!=','delivered')->get();
+      return response([
+     'orders'=>$data
+     ]);
+
+
     }
 }
