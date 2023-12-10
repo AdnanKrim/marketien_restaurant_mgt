@@ -9,6 +9,7 @@ use App\Http\Controllers\Menu\FoodItemController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ReserveController;
 use App\Models\FoodItem;
 use Whoops\RunInterface;
 
@@ -63,6 +64,12 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/order-detail/{id}', [OrderController::class, 'orderDetails'])->name('order-detail');
     Route::get('/order-stage-approve/{id}', [OrderController::class, 'orderStageApproved'])->name('order-stage-approve');
     Route::get('/order-stage-way/{id}', [OrderController::class, 'orderStageOnTheWay'])->name('order-stage-way');
+    //Reservation
+
+    Route::get('/reservation-list', [ReserveController::class, 'getReserveListApi'])->name('reservation-list');
+    Route::get('/reservation-approve/{id}', [ReserveController::class, 'reservationApproved'])->name('reservation-approve');
+    Route::delete('/reservation-delete/{id}', [ReserveController::class, 'reservationDeleteApi'])->name('reservation-delete');
+
 });
 
 Route::post("login", [UserController::class, 'adminLogin']);
@@ -76,6 +83,9 @@ Route::get('/food-item-list', [FoodItemController::class, 'getFoodItemApi'])->na
 //Order
 Route::post('/add-order', [OrderController::class, 'addOrderApi'])->name('add-order');
 Route::get('/user-order-list', [OrderController::class, 'userOrderTracking'])->name('user-order-list');
+Route::get('/user-order-detail/{id}', [OrderController::class, 'userOrderDetail'])->name('user-order-detail');
+//Reservation
+Route::post('/add-reservation', [ReserveController::class, 'addReservationApi'])->name('add-reservation');
 
 
 
