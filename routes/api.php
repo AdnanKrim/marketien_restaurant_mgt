@@ -10,7 +10,10 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReserveController;
+use App\Http\Controllers\PressController;
+use App\Http\Controllers\Menu\PackageController;
 use App\Models\FoodItem;
+use App\Models\Package;
 use Whoops\RunInterface;
 
 /*
@@ -54,7 +57,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     // Employee api
     Route::post('/add-employee', [EmployeeController::class, 'addEmployeeApi'])->name('add-employee');
-    Route::get('/employee-list', [EmployeeController::class, 'employeeListApi'])->name('employee-list');
     Route::post('/employee-update', [EmployeeController::class, 'updateEmployeeApi'])->name('employee-update');
     Route::get('/employee-detail/{id}', [EmployeeController::class, 'adminEmployeeDetailApi'])->name('employee-detail-information');
     Route::get('/employee-edit/{id}', [EmployeeController::class, 'editEmployeeFormApi'])->name('employee-edit-information');
@@ -69,7 +71,17 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/reservation-list', [ReserveController::class, 'getReserveListApi'])->name('reservation-list');
     Route::get('/reservation-approve/{id}', [ReserveController::class, 'reservationApproved'])->name('reservation-approve');
     Route::delete('/reservation-delete/{id}', [ReserveController::class, 'reservationDeleteApi'])->name('reservation-delete');
-
+    //Press
+    Route::post('/add-press', [PressController::class, 'addPressApi'])->name('add-press');
+    Route::get('/press-list', [PressController::class, 'pressListApi'])->name('press-list');
+    Route::post('/press-update', [PressController::class, 'updatePressApi'])->name('press-update');
+    Route::get('/press-edit/{id}', [PressController::class, 'editPressFormApi'])->name('press-edit-information');
+    Route::delete('/press-delete/{id}', [PressController::class, 'pressDeleteApi'])->name('press-delete-api');
+    //packages
+    Route::get('/get-dropdown-food-item', [PackageController::class, 'getFoodItemDropdown'])->name('get-dropdown-food-item');
+    Route::post('/add-package', [PackageController::class, 'addPackageApi'])->name('add-package');
+    Route::get('/package-list', [PackageController::class, 'packageListApi'])->name('package-list');
+    Route::delete('/package-delete/{id}', [PackageController::class, 'packageDeleteApi'])->name('package-delete-api');
 });
 
 Route::post("login", [UserController::class, 'adminLogin']);
@@ -86,7 +98,9 @@ Route::get('/user-order-list', [OrderController::class, 'userOrderTracking'])->n
 Route::get('/user-order-detail/{id}', [OrderController::class, 'userOrderDetail'])->name('user-order-detail');
 //Reservation
 Route::post('/add-reservation', [ReserveController::class, 'addReservationApi'])->name('add-reservation');
-
+Route::get('user-reservation-info',[ReserveController::class,'userReserveInfoApi'])->name('user-reservation-info');
+//employee
+Route::get('/employee-list', [EmployeeController::class, 'employeeListApi'])->name('employee-list');
 
 
 

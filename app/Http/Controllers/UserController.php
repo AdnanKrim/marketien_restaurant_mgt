@@ -30,4 +30,12 @@ class UserController extends Controller
         
              return response($response, 201);
     }
+    public function adminLogoutApi(Request $request){
+        $request->user()->currentAccessToken()->delete();
+        return response([
+            'message' => ['logged out successfully'],
+            'status'=>'405'
+        ]);
+    }
+
 }

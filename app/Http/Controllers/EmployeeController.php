@@ -10,9 +10,18 @@ class EmployeeController extends Controller
 {
     public function employeeListApi()
     {
-        $emp = Employee::all();
+        $data = Employee::all();
+        $employee = [];
+
+        foreach ($data as $emp) {
+            $fileName = $emp->image;
+            $path = asset('/upload/image/' . $fileName);
+            $emp->imgLink = $path;
+            unset($emp->image);
+            $employee[] = $emp;
+        }
         return response([
-            'employee' => $emp
+            'employee' => $employee
         ]);
     }
     public function addEmployeeApi(Request $req)

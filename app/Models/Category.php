@@ -11,4 +11,7 @@ class Category extends Model
     public function subcategories(){
         return $this->hasMany(Subcategory::class,'categoryId');
     }
+    public function fooditems(){
+        return $this->hasMany(FoodItem::class,'categoryId');
+    }
 }

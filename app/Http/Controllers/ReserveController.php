@@ -18,16 +18,17 @@ class ReserveController extends Controller
     public function userReserveInfoApi()
     {
         // $data = Order::where('orderStage','=','pending')->get();
-        $data = Reservation::where('clientIp',Request()->ip())->latest();
+        $data = Reservation::where('clientIp',Request()->ip())->first();
         if($data){
-            if($data->reserveState == 'approved'){
+            if($data->reserveState === 'approved'){
                 return response([
                     'reserve' => $data,
-                    'status'=> '201'
+                    'status'=> '201',
+                    'message'=>'You have an reservation'
                 ]);
             } else
             return response([
-                'message'=> 'Your request is processing',
+                'message'=> 'Your request reservation is processing',
                 'status'=> '202'
             ]);
         }
