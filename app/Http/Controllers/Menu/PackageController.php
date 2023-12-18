@@ -18,7 +18,7 @@ class PackageController extends Controller
     public function addPackageApi(Request $req){
         $data = new Package();
         $data->packageName = $req->packageName;
-        $data->foodItems = $req->foodItems;
+        $data->foodItems = json_decode($req->foodItems);
         $data->numOfPeople = $req->numOfPeople;
         $data->price = $req->price;
         $data->packageState = null;
@@ -43,6 +43,35 @@ class PackageController extends Controller
             "category"=>$catData
         ]);
         
+    }
+    public function editPackageFormApi($id){
+        $data = Package::find($id);
+        $data['items'] = json_encode($data->foodItems);
+        return response([
+           'package'=> $data,    
+        ]);
+    
+    }
+    public function updatePackageApi(Request $req)
+    {
+        $data =Package::find($req->id);
+        $data->packageName = $req->packageName;
+        $data->foodItems = json_decode($req->foodItems);
+        $data->numOfPeople = $req->numOfPeople;
+        $data->price = $req->price;
+        $data->packageState = null;
+        $result = $data->save();
+        if ($result) {
+            return response([
+               'message' => 'Successfully updated a package',
+                'status' => '201'
+            ]);
+        } else {
+            return response([
+                'message' => 'failed, Something Went Wrong',
+                'status' => '202'
+            ]);
+        }
     }
     public function packageDeleteApi($id){
     

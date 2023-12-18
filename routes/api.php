@@ -12,6 +12,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReserveController;
 use App\Http\Controllers\PressController;
 use App\Http\Controllers\Menu\PackageController;
+use App\Http\Controllers\DeliveryController;
 use App\Models\FoodItem;
 use App\Models\Package;
 use Whoops\RunInterface;
@@ -82,6 +83,21 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/add-package', [PackageController::class, 'addPackageApi'])->name('add-package');
     Route::get('/package-list', [PackageController::class, 'packageListApi'])->name('package-list');
     Route::delete('/package-delete/{id}', [PackageController::class, 'packageDeleteApi'])->name('package-delete-api');
+    Route::get('/package-edit/{id}', [PackageController::class, 'editPackageFormApi'])->name('package-edit-information');
+    Route::post('/package-update', [PackageController::class, 'updatePackageApi'])->name('package-update');
+    //deliveryman
+    Route::post('/add-delivery-man', [DeliveryController::class, 'addDeliveryManApi'])->name('add-delivery-man');
+    Route::post('/create-delivery-panel', [DeliveryController::class, 'createDeliveryPanel'])->name('create-delivery-panel');
+    Route::post('/assign-order', [DeliveryController::class, 'assignOrderApi'])->name('assign-order');
+    Route::post('/delivery-man-update', [DeliveryController::class, 'updateDeliveryManApi'])->name('delivery-man-update');
+    Route::get('/delivery-man-edit/{id}', [DeliveryController::class, 'editDeliveryManFormApi'])->name('delivery-man-edit-information');
+    Route::get('/close-delivery-panel/{id}', [DeliveryController::class, 'closeDeliveryPanel'])->name('close-delivery-panel');
+    Route::get('/delivery-man-info/{id}', [DeliveryController::class, 'getDeliveryManInfo'])->name('delivery-man-information');
+    Route::delete('/delivery-man-delete/{id}', [DeliveryController::class, 'deliveryManDeleteApi'])->name('delivery-man-delete-api');
+    Route::get('/delivery-man-list', [DeliveryController::class, 'deliveryManListApi'])->name('delivery-man-list');
+    Route::get('/delivery-panel-list', [DeliveryController::class, 'allDeliveryPanelList'])->name('delivery-panel-list');
+    Route::get('/order-delivery-list', [DeliveryController::class, 'getOrderDeliveryListApi'])->name('order-delivery-list');
+
 });
 
 Route::post("login", [UserController::class, 'adminLogin']);
