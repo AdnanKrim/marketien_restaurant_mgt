@@ -67,6 +67,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/order-detail/{id}', [OrderController::class, 'orderDetails'])->name('order-detail');
     Route::get('/order-stage-approve/{id}', [OrderController::class, 'orderStageApproved'])->name('order-stage-approve');
     Route::get('/order-stage-way/{id}', [OrderController::class, 'orderStageOnTheWay'])->name('order-stage-way');
+    Route::get('/order-stage-delivered/{id}', [OrderController::class, 'orderStageDelivered'])->name('order-stage-delivered');
     //Reservation
 
     Route::get('/reservation-list', [ReserveController::class, 'getReserveListApi'])->name('reservation-list');
@@ -74,7 +75,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::delete('/reservation-delete/{id}', [ReserveController::class, 'reservationDeleteApi'])->name('reservation-delete');
     //Press
     Route::post('/add-press', [PressController::class, 'addPressApi'])->name('add-press');
-    Route::get('/press-list', [PressController::class, 'pressListApi'])->name('press-list');
+
     Route::post('/press-update', [PressController::class, 'updatePressApi'])->name('press-update');
     Route::get('/press-edit/{id}', [PressController::class, 'editPressFormApi'])->name('press-edit-information');
     Route::delete('/press-delete/{id}', [PressController::class, 'pressDeleteApi'])->name('press-delete-api');
@@ -97,6 +98,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/delivery-man-list', [DeliveryController::class, 'deliveryManListApi'])->name('delivery-man-list');
     Route::get('/delivery-panel-list', [DeliveryController::class, 'allDeliveryPanelList'])->name('delivery-panel-list');
     Route::get('/order-delivery-list', [DeliveryController::class, 'getOrderDeliveryListApi'])->name('order-delivery-list');
+    //for delivery panel
+    Route::get('/order-assign-list', [DeliveryController::class, 'deliveryAssignList'])->name('order-assign-list');
 
 });
 
@@ -117,6 +120,8 @@ Route::post('/add-reservation', [ReserveController::class, 'addReservationApi'])
 Route::get('user-reservation-info',[ReserveController::class,'userReserveInfoApi'])->name('user-reservation-info');
 //employee
 Route::get('/employee-list', [EmployeeController::class, 'employeeListApi'])->name('employee-list');
+Route::get('/delivery-man-info/{id}', [DeliveryController::class, 'deliveryManInfo'])->name('delivery-man-info');
+Route::get('/press-list', [PressController::class, 'pressListApi'])->name('press-list');
 
 
 

@@ -96,6 +96,23 @@ class OrderController extends Controller
       ]);
     }
   }
+  public function orderStageDelivered($id)
+  {
+    $data = Order::find($id);
+    $data->orderStage = 'delivered';
+    $result = $data->save();
+    if ($result) {
+      return response([
+        'message' => 'Order is delivered',
+        'status' => '201'
+      ]);
+    } else {
+      return response([
+        'message' => 'failed, Something Went Wrong',
+        'status' => '202'
+      ]);
+    }
+  }
   public function userOrderTracking()
   {
     $data = Order::where('clientIp', Request()->ip())->where('orderStage', '!=', 'delivered')->get();

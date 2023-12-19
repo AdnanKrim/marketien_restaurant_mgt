@@ -14,30 +14,31 @@ class DeliveryController extends Controller
     public function deliveryManListApi()
     {
         $data = Employee::where('designation', '=', 'delivery man')->get();
-        $delivery =[];
-        foreach($data as $dlvr){
-            $user = User::where('name','=',$dlvr->name)->first();
-            if($user){
+        $delivery = [];
+        foreach ($data as $dlvr) {
+            $user = User::where('name', '=', $dlvr->name)->first();
+            if ($user) {
                 $dlvr->status = 2;
-            }
-            else{
+            } else {
                 $dlvr->status = 1;
             }
-            $delivery[]= $dlvr;
+            $delivery[] = $dlvr;
         }
-        
-        
+
+
         return response([
             'deliveryMan' => $delivery
         ]);
     }
-    public function getDeliveryManInfo($id){
+    public function getDeliveryManInfo($id)
+    {
         $data = Employee::find($id);
         return response([
-            'deliveryMan'=> $data
+            'deliveryMan' => $data
         ]);
     }
-    public function createDeliveryPanel(Request $req){
+    public function createDeliveryPanel(Request $req)
+    {
         $user = new User();
         $user->name = $req->name;
         $user->email = $req->email;
@@ -55,12 +56,12 @@ class DeliveryController extends Controller
                 'status' => '202'
             ]);
         }
-
     }
-    public function closeDeliveryPanel($id){
-         $data = Employee::find($id);
-         $user = User::where('name','=',$data->name)->first();
-         if (!$user) {
+    public function closeDeliveryPanel($id)
+    {
+        $data = Employee::find($id);
+        $user = User::where('name', '=', $data->name)->first();
+        if (!$user) {
             return response([
                 "message" => 'delivery panel doesnt exist',
                 "status" => 202
@@ -72,7 +73,6 @@ class DeliveryController extends Controller
                 "status" => 201
             ]);
         }
-
     }
     public function addDeliveryManApi(Request $req)
     {
@@ -128,20 +128,20 @@ class DeliveryController extends Controller
     {
 
         $data = Employee::find($id);
-        $user = User::where('name','=',$data->name)->first();
+        $user = User::where('name', '=', $data->name)->first();
         if (!$data) {
             return response([
                 "message" => 'delivery man doesnt exist',
                 "status" => 202
             ]);
         } else {
-            if($user){
+            if ($user) {
                 $data->delete();
                 $user->delete();
                 return response([
                     "message" => 'delivery man and delivery panel deleted successfuly',
                     "status" => 203
-                ]);   
+                ]);
             }
 
             $data->delete();
@@ -151,13 +151,15 @@ class DeliveryController extends Controller
             ]);
         }
     }
-    public function allDeliveryPanelList(){
-    $data = User::where('role','=',2)->get();
-    return response([
-      'deliveryPanel'=>$data
-    ]);
+    public function allDeliveryPanelList()
+    {
+        $data = User::where('role', '=', 2)->get();
+        return response([
+            'deliveryPanel' => $data
+        ]);
     }
-    public function assignOrderApi(Request $req){
+    public function assignOrderApi(Request $req)
+    {
         $data = Order::find($req->id);
         $data->orderHandler = $req->name;
         $result = $data->save();
@@ -172,15 +174,38 @@ class DeliveryController extends Controller
                 'status' => '202'
             ]);
         }
-
-
     }
     public function getOrderDeliveryListApi()
-  {
-    // $data = Order::where('orderStage','=','pending')->get();
-    $data = Order::where('orderHandler','!=',null)->get();
-    return response([
-      'orderDeliveryList' => $data
-    ]);
-  }
+    {
+        // $data = Order::where('orderStage','=','pending')->get();
+        $data = Order::where('orderHandler', '!=', null)->get();
+        return response([
+            'orderDeliveryList' => $data
+        ]);
+    }
+    public function deliveryAssignList(){
+        $data = Order::where('orderHandler', auth()->user()->name)->get();
+        return response([
+         'assignList'=> $data
+        ]);
+    }
+    public function deliveryManInfo($id){
+        $data = Order::find($id);
+        $user = User::where('name',$data->orderHandler)->first();
+        if($user){
+        $dMan = Employee::where('email',$user->email)->first();
+        return response([
+            'deliveryMan'=> $dMan,
+            'status' => '201'
+             ]);
+        }
+        else{
+            return response([
+                'message'=>'Your delivery man has not been assigned yet',
+                'status' =>'401'
+            ]);
+        }
+        
+        
+    }
 }
