@@ -52,14 +52,30 @@ class PackageController extends Controller
         ]);
     
     }
+    public function getPackageItemApi($id){
+        $data = Package::find($id);
+        // $data['items'] = json_encode($data->foodItems);
+        return response([
+           'package'=> $data,    
+        ]);
+    
+    }
     public function updatePackageApi(Request $req)
     {
         $data =Package::find($req->id);
         $data->packageName = $req->packageName;
-        $data->foodItems = json_decode($req->foodItems);
+       
         $data->numOfPeople = $req->numOfPeople;
         $data->price = $req->price;
         $data->packageState = null;
+        
+        if($req->has('foodItems')){
+            $data->foodItems = json_decode($req->foodItems);
+        }
+        else{
+            unset($data->foodItems);
+            array_values($data->foodItems);
+        }
         $result = $data->save();
         if ($result) {
             return response([

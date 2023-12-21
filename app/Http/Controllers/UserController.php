@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
@@ -35,6 +36,14 @@ class UserController extends Controller
         return response([
             'message' => ['logged out successfully'],
             'status'=>'405'
+        ]);
+    }
+    public function getAdminGraphInfo(){
+        $data = Order::where('orderStage','=','delivered')->sum('totalAmount');
+        $user = Order::where('orderStage','=','delivered')->count();
+        return response([
+        'totalSale'=>$data,
+        'totalDelivery'=>$user
         ]);
     }
 

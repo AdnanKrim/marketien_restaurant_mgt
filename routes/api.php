@@ -34,6 +34,7 @@ use Whoops\RunInterface;
 
 // });
 Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::group(['middleware' => 'adminPanel'], function(){
     //Category Api
     Route::get('/category-list', [CategoryController::class, 'getCategoryApi'])->name('category-list');
     Route::post('/add-category', [CategoryController::class, 'addCategoryApi'])->name('add-category');
@@ -67,7 +68,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/order-detail/{id}', [OrderController::class, 'orderDetails'])->name('order-detail');
     Route::get('/order-stage-approve/{id}', [OrderController::class, 'orderStageApproved'])->name('order-stage-approve');
     Route::get('/order-stage-way/{id}', [OrderController::class, 'orderStageOnTheWay'])->name('order-stage-way');
-    Route::get('/order-stage-delivered/{id}', [OrderController::class, 'orderStageDelivered'])->name('order-stage-delivered');
+    
     //Reservation
 
     Route::get('/reservation-list', [ReserveController::class, 'getReserveListApi'])->name('reservation-list');
@@ -82,7 +83,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     //packages
     Route::get('/get-dropdown-food-item', [PackageController::class, 'getFoodItemDropdown'])->name('get-dropdown-food-item');
     Route::post('/add-package', [PackageController::class, 'addPackageApi'])->name('add-package');
-    Route::get('/package-list', [PackageController::class, 'packageListApi'])->name('package-list');
+   
     Route::delete('/package-delete/{id}', [PackageController::class, 'packageDeleteApi'])->name('package-delete-api');
     Route::get('/package-edit/{id}', [PackageController::class, 'editPackageFormApi'])->name('package-edit-information');
     Route::post('/package-update', [PackageController::class, 'updatePackageApi'])->name('package-update');
@@ -98,12 +99,22 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/delivery-man-list', [DeliveryController::class, 'deliveryManListApi'])->name('delivery-man-list');
     Route::get('/delivery-panel-list', [DeliveryController::class, 'allDeliveryPanelList'])->name('delivery-panel-list');
     Route::get('/order-delivery-list', [DeliveryController::class, 'getOrderDeliveryListApi'])->name('order-delivery-list');
-    //for delivery panel
-    Route::get('/order-assign-list', [DeliveryController::class, 'deliveryAssignList'])->name('order-assign-list');
+   
+    //logout
+    Route::post('admin-logout',[UserController::class,'adminLogoutApi']);
+    Route::get('/admin-graph-first',[UserController::class,'getAdminGraphInfo'])->name('admin-graph-first');
+});
 
+
+    Route::group(['middleware' => 'deliveryPanel'], function(){
+ //for delivery panel
+ Route::get('/order-assign-list', [DeliveryController::class, 'deliveryAssignList'])->name('order-assign-list');
+ Route::get('/order-stage-delivered/{id}', [OrderController::class, 'orderStageDelivered'])->name('order-stage-delivered');
+    });
 });
 
 Route::post("login", [UserController::class, 'adminLogin']);
+
 // Route::get('/get-ip',[EmployeeController::class,'getIp']);
 //Add to Cart
 Route::get('/add-to-cart/{id}', [CartController::class, 'addToCart'])->name('add-to-cart');
@@ -122,6 +133,8 @@ Route::get('user-reservation-info',[ReserveController::class,'userReserveInfoApi
 Route::get('/employee-list', [EmployeeController::class, 'employeeListApi'])->name('employee-list');
 Route::get('/delivery-man-info/{id}', [DeliveryController::class, 'deliveryManInfo'])->name('delivery-man-info');
 Route::get('/press-list', [PressController::class, 'pressListApi'])->name('press-list');
+Route::get('/package-list', [PackageController::class, 'packageListApi'])->name('package-list');
+Route::get('/package-item/{id}', [PackageController::class, 'getPackageItemApi'])->name('package-item');
 
 
 
