@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class CartController extends Controller
 {
     public function addToCart($id){
-      $cart = FoodCart::where('foodId',$id)->first();
+      $cart = FoodCart::where('foodId',$id)->where('userIp',Request()->ip())->first();
       
       if($cart){
         return response([
@@ -47,7 +47,7 @@ class CartController extends Controller
       foreach($data as $item){
         $foodItem = FoodItem::where('id',$item->foodId)->first();
         $fileName = $foodItem->image;
-        $path = asset('/upload/image/'. $fileName );   
+        $path = asset('public/upload/image/'. $fileName );   
          $foodItem->imgLink = $path;
          unset($foodItem->image); 
         $foodCart[] = $foodItem ;

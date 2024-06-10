@@ -10,9 +10,17 @@ class ReserveController extends Controller
     public function getReserveListApi()
     {
         // $data = Order::where('orderStage','=','pending')->get();
-        $data = Reservation::all();
+        $data = Reservation::where('reserveState','=','requested')->get();
         return response([
             'reserveList' => $data
+        ]);
+    }
+    public function getApprovedReserveListApi()
+    {
+        // $data = Order::where('orderStage','=','pending')->get();
+        $data = Reservation::where('reserveState','=','approved')->get();
+        return response([
+            'approvedReserveList' => $data
         ]);
     }
     public function userReserveInfoApi()
@@ -73,11 +81,39 @@ class ReserveController extends Controller
     public function reservationApproved($id)
     {
         $data = Reservation::find($id);
-        $data->reserveState = 'approved';
+        $user = Reservation::where('clientIp',$data->clientIp)->where('reserveState','=','approved')->get();
+        
+    if($user){
+            return response([
+                'message' => 'Already a reservation is fixed',
+                'status' => '203'
+            ]);  
+        }
+        else{
+            $data->reserveState = 'approved';
+            $result = $data->save();
+            if ($result) {
+                return response([
+                    'message' => 'reservation is approved',
+                    'status' => '201'
+                ]);
+            } else {
+                return response([
+                    'message' => 'failed, Something Went Wrong',
+                    'status' => '202'
+                ]);
+            }
+        }
+        
+    }
+    public function reservationDeclined($id)
+    {
+        $data = Reservation::find($id);
+        $data->reserveState = 'requested';
         $result = $data->save();
         if ($result) {
             return response([
-                'message' => 'reservation is approved',
+                'message' => 'reservation is declined',
                 'status' => '201'
             ]);
         } else {

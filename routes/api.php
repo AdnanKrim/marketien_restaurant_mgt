@@ -13,6 +13,7 @@ use App\Http\Controllers\ReserveController;
 use App\Http\Controllers\PressController;
 use App\Http\Controllers\Menu\PackageController;
 use App\Http\Controllers\DeliveryController;
+use App\Http\Controllers\Menu\ReviewController;
 use App\Models\FoodItem;
 use App\Models\Package;
 use Whoops\RunInterface;
@@ -72,7 +73,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     //Reservation
 
     Route::get('/reservation-list', [ReserveController::class, 'getReserveListApi'])->name('reservation-list');
+    Route::get('/approved-reservation-list', [ReserveController::class, 'getApprovedReserveListApi'])->name('approved-reservation-list');
     Route::get('/reservation-approve/{id}', [ReserveController::class, 'reservationApproved'])->name('reservation-approve');
+    Route::get('/reservation-decline/{id}', [ReserveController::class, 'reservationDeclined'])->name('reservation-decline');
     Route::delete('/reservation-delete/{id}', [ReserveController::class, 'reservationDeleteApi'])->name('reservation-delete');
     //Press
     Route::post('/add-press', [PressController::class, 'addPressApi'])->name('add-press');
@@ -101,11 +104,12 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/order-delivery-list', [DeliveryController::class, 'getOrderDeliveryListApi'])->name('order-delivery-list');
    
     //logout
-    Route::post('admin-logout',[UserController::class,'adminLogoutApi']);
+    
     Route::get('/admin-graph-first',[UserController::class,'getAdminGraphInfo'])->name('admin-graph-first');
+    Route::get('/admin-order-graph',[UserController::class,'orderGraphInfo'])->name('order-graph');
 });
 
-
+Route::post('admin-logout',[UserController::class,'adminLogoutApi']);
     Route::group(['middleware' => 'deliveryPanel'], function(){
  //for delivery panel
  Route::get('/order-assign-list', [DeliveryController::class, 'deliveryAssignList'])->name('order-assign-list');
@@ -120,6 +124,7 @@ Route::post("login", [UserController::class, 'adminLogin']);
 Route::get('/add-to-cart/{id}', [CartController::class, 'addToCart'])->name('add-to-cart');
 Route::get('/cart-item', [CartController::class, 'getCartApi'])->name('cart-item');
 Route::delete('/food-cart-delete/{id}', [CartController::class, 'foodCartDeleteApi'])->name('food-cart-delete-api');
+Route::post('/add-review',[ReviewController::class,'getReview'])->name('add-review');
 //Menu
 Route::get('/food-item-list', [FoodItemController::class, 'getFoodItemApi'])->name('food-item-list');
 //Order
