@@ -57,6 +57,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/food-item-update', [FoodItemController::class, 'updateFoodItemApi'])->name('food-item-update');
     Route::get('/food-item-edit/{id}', [FoodItemController::class, 'editFoodItemFormApi'])->name('food-item-edit-information');
     Route::delete('/food-item-delete/{id}', [FoodItemController::class, 'foodItemDeleteApi'])->name('food-item-delete-api');
+    Route::get('/priority/{id}',[FoodItemController::class,'priority'])->name('priority');
+    Route::get('/status/{id}',[FoodItemController::class,'status'])->name('status');
 
     // Employee api
     Route::post('/add-employee', [EmployeeController::class, 'addEmployeeApi'])->name('add-employee');
@@ -69,7 +71,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/order-detail/{id}', [OrderController::class, 'orderDetails'])->name('order-detail');
     Route::get('/order-stage-approve/{id}', [OrderController::class, 'orderStageApproved'])->name('order-stage-approve');
     Route::get('/order-stage-way/{id}', [OrderController::class, 'orderStageOnTheWay'])->name('order-stage-way');
-    
+
     //Reservation
 
     Route::get('/reservation-list', [ReserveController::class, 'getReserveListApi'])->name('reservation-list');
@@ -86,7 +88,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     //packages
     Route::get('/get-dropdown-food-item', [PackageController::class, 'getFoodItemDropdown'])->name('get-dropdown-food-item');
     Route::post('/add-package', [PackageController::class, 'addPackageApi'])->name('add-package');
-   
+
     Route::delete('/package-delete/{id}', [PackageController::class, 'packageDeleteApi'])->name('package-delete-api');
     Route::get('/package-edit/{id}', [PackageController::class, 'editPackageFormApi'])->name('package-edit-information');
     Route::post('/package-update', [PackageController::class, 'updatePackageApi'])->name('package-update');
@@ -102,9 +104,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/delivery-man-list', [DeliveryController::class, 'deliveryManListApi'])->name('delivery-man-list');
     Route::get('/delivery-panel-list', [DeliveryController::class, 'allDeliveryPanelList'])->name('delivery-panel-list');
     Route::get('/order-delivery-list', [DeliveryController::class, 'getOrderDeliveryListApi'])->name('order-delivery-list');
-   
+
     //logout
-    
+
     Route::get('/admin-graph-first',[UserController::class,'getAdminGraphInfo'])->name('admin-graph-first');
     Route::get('/admin-order-graph',[UserController::class,'orderGraphInfo'])->name('order-graph');
 });

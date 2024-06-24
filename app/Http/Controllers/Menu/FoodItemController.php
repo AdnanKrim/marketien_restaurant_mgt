@@ -144,4 +144,49 @@ class FoodItemController extends Controller
         $data = $req->getClientIp();
         return $data;
     }
+    public function priority($id){
+        $data = FoodItem::find($id);
+        if($data->priority === "normal"||$data->priority === null){
+            $data->priority = "special";
+            $result = $data->save();
+        }else{
+            $data->priority = "normal";
+            $result = $data->save();
+        }
+
+        if ($result) {
+            return response([
+                'message' => 'Priority has set Sucessfully',
+                'status' => '201'
+            ]);
+        } else {
+            return response([
+                'message' => 'failed, Something Went Wrong',
+                'status' => '202'
+            ]);
+        }
+    }
+    public function status($id){
+        $data = FoodItem::find($id);
+        if($data->status === "unavailable" || $data->status === null){
+            $data->status = "available";
+            $result = $data->save();
+        }else{
+            $data->status = "unavailable";
+            $result = $data->save();
+        }
+
+        if ($result) {
+            return response([
+                'message' => 'Status has set Sucessfully',
+                'status' => '201'
+            ]);
+        } else {
+            return response([
+                'message' => 'failed, Something Went Wrong',
+                'status' => '202'
+            ]);
+        }
+    }
+
 }
