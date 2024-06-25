@@ -29,6 +29,7 @@ class FoodItemController extends Controller
             $food->imgLink = $path;
             $food->review = $review;
             unset($food->image);
+            unset($food->rating);
             $foodItem[] = $food;
         }
         return response([

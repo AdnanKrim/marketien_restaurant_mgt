@@ -10,7 +10,7 @@ class CartController extends Controller
 {
     public function addToCart($id){
       $cart = FoodCart::where('foodId',$id)->where('userIp',Request()->ip())->first();
-      
+
       if($cart){
         return response([
           'message'=>'You have added this item already',
@@ -33,12 +33,12 @@ class CartController extends Controller
             'message'=>'Something Went Wrong',
             'status'=>'404'
         ]);
-        
+
       }
 
       }
-      
-      
+
+
 
     }
     public function getCartApi(Request $req){
@@ -47,9 +47,9 @@ class CartController extends Controller
       foreach($data as $item){
         $foodItem = FoodItem::where('id',$item->foodId)->first();
         $fileName = $foodItem->image;
-        $path = asset('public/upload/image/'. $fileName );   
+        $path = asset('upload/image/'. $fileName );
          $foodItem->imgLink = $path;
-         unset($foodItem->image); 
+         unset($foodItem->image);
         $foodCart[] = $foodItem ;
       }
       return response([
